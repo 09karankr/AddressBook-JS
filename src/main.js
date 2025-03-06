@@ -28,6 +28,11 @@ try {
     console.log("\nContacts after editing:");
     console.log(addressBook.listContacts(0));
 
+    // Delete a contact
+    addressBook.deleteContact(0, "Amit", "Sharma");
+    console.log("\nContacts after deletion:");
+    console.log(addressBook.listContacts(0));
+
 } catch (error) {
     console.error(error.message);
 }

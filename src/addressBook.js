@@ -76,6 +76,20 @@ class AddressBook {
         }
     }
 
+    deleteContact(bookIndex, firstName, lastName) {
+        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
+            const book = this.addressBooks[bookIndex];
+            const contactIndex = book.findIndex(contact => contact.firstName === firstName && contact.lastName === lastName);
+            if (contactIndex !== -1) {
+                book.splice(contactIndex, 1);
+            } else {
+                throw new Error("Contact not found");
+            }
+        } else {
+            throw new Error("Invalid Address Book Index");
+        }
+    }
+
     listContacts(bookIndex) {
         if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
             return this.addressBooks[bookIndex].map(contact => contact.toString()).join("\n");

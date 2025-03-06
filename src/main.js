@@ -17,6 +17,9 @@ try {
     console.log("Contacts after adding:");
     console.log(addressBook.listContacts(0));
 
+    // Find number of contacts
+    console.log("\nNumber of contacts in the address book:", addressBook.getContactCount(0));
+
     // Find a contact
     const foundContact = addressBook.findContact(0, "Amit", "Sharma");
     console.log("\nFound Contact:");
@@ -32,6 +35,9 @@ try {
     addressBook.deleteContact(0, "Amit", "Sharma");
     console.log("\nContacts after deletion:");
     console.log(addressBook.listContacts(0));
+
+    // Find number of contacts after deletion
+    console.log("\nNumber of contacts in the address book:", addressBook.getContactCount(0));
 
 } catch (error) {
     console.error(error.message);

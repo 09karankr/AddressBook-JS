@@ -97,6 +97,14 @@ class AddressBook {
             throw new Error("Invalid Address Book Index");
         }
     }
+
+    getContactCount(bookIndex) {
+        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
+            return this.addressBooks[bookIndex].length;
+        } else {
+            throw new Error("Invalid Address Book Index");
+        }
+    }
 }
 
 module.exports = { Contact, AddressBook };

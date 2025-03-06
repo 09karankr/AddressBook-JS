@@ -59,6 +59,23 @@ class AddressBook {
         }
     }
 
+    findContact(bookIndex, firstName, lastName) {
+        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
+            return this.addressBooks[bookIndex].find(contact => contact.firstName === firstName && contact.lastName === lastName);
+        } else {
+            throw new Error("Invalid Address Book Index");
+        }
+    }
+
+    editContact(bookIndex, firstName, lastName, newDetails) {
+        const contact = this.findContact(bookIndex, firstName, lastName);
+        if (contact) {
+            Object.assign(contact, newDetails);
+        } else {
+            throw new Error("Contact not found");
+        }
+    }
+
     listContacts(bookIndex) {
         if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
             return this.addressBooks[bookIndex].map(contact => contact.toString()).join("\n");

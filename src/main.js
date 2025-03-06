@@ -1,29 +1,33 @@
-const { Contact, AddressBook } = require('./addressBook');
+const { Contact, AddressBook } = require("./addressBook");
+
+// Create an AddressBook instance
+const addressBook = new AddressBook();
+
+// Create a new Address Book
+const myBook = addressBook.createNewAddressBook();
 
 try {
-    const addressBookManager = new AddressBook();
-
-    // Create two new address books
-    const book1 = addressBookManager.createNewAddressBook();
-    const book2 = addressBookManager.createNewAddressBook();
-
-    // Add contacts to the first address book
+    // Add contacts
     const contact1 = new Contact("Amit", "Sharma", "123 MG Road", "Mumbai", "Maharashtra", "400001", "9876543210", "amit.sharma@example.com");
-    const contact2 = new Contact("Priya", "Verma", "456 Park Street", "Kolkata", "West Bengal", "700001", "8765432109", "priya.verma@example.com");
-    
-    addressBookManager.addContactToBook(0, contact1);
-    addressBookManager.addContactToBook(0, contact2);
+    const contact2 = new Contact("Priya", "Verma", "456 Nehru Nagar", "Delhi", "Delhi", "110011", "8765432109", "priya.verma@example.com");
 
-    // Add a contact to the second address book
-    const contact3 = new Contact("Rajesh", "Gupta", "789 Gandhi Nagar", "Delhi", "Delhi", "110001", "7654321098", "rajesh.gupta@example.com");
-    addressBookManager.addContactToBook(1, contact3);
+    addressBook.addContactToBook(0, contact1);
+    addressBook.addContactToBook(0, contact2);
 
-    console.log("Contacts in Address Book 1:");
-    console.log(addressBookManager.listContacts(0));
+    console.log("Contacts after adding:");
+    console.log(addressBook.listContacts(0));
 
-    console.log("\nContacts in Address Book 2:");
-    console.log(addressBookManager.listContacts(1));
+    // Find a contact
+    const foundContact = addressBook.findContact(0, "Amit", "Sharma");
+    console.log("\nFound Contact:");
+    console.log(foundContact ? foundContact.toString() : "Contact not found");
+
+    // Edit a contact
+    addressBook.editContact(0, "Amit", "Sharma", { city: "Pune", state: "Maharashtra", zip: "411001" });
+
+    console.log("\nContacts after editing:");
+    console.log(addressBook.listContacts(0));
 
 } catch (error) {
-    console.error("Error:", error.message);
+    console.error(error.message);
 }

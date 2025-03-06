@@ -12,8 +12,8 @@ class Contact {
         if (!/^[a-zA-Z]{4,}$/.test(city)) {
             throw new Error("Invalid City: Should have at least 4 characters.");
         }
-        if (!/^[a-zA-Z]{4,}$/.test(state)) {
-            throw new Error("Invalid State: Should have at least 4 characters.");
+        if (!/^[a-zA-Z\s]{3,}$/.test(state)) {
+            throw new Error("Invalid State: Should have at least 3 characters.");
         }
         if (!/^\d{6}$/.test(zip)) {
             throw new Error("Invalid Zip: Should be a 6-digit number.");
@@ -42,15 +42,29 @@ class Contact {
 
 class AddressBook {
     constructor() {
-        this.contacts = [];
+        this.addressBooks = [];
     }
 
-    addContact(contact) {
-        this.contacts.push(contact);
+    createNewAddressBook() {
+        const newBook = [];
+        this.addressBooks.push(newBook);
+        return newBook;
     }
 
-    listContacts() {
-        return this.contacts.map(contact => contact.toString()).join("\n");
+    addContactToBook(bookIndex, contact) {
+        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
+            this.addressBooks[bookIndex].push(contact);
+        } else {
+            throw new Error("Invalid Address Book Index");
+        }
+    }
+
+    listContacts(bookIndex) {
+        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
+            return this.addressBooks[bookIndex].map(contact => contact.toString()).join("\n");
+        } else {
+            throw new Error("Invalid Address Book Index");
+        }
     }
 }
 

@@ -53,7 +53,18 @@ class AddressBook {
 
     addContactToBook(bookIndex, contact) {
         if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
-            this.addressBooks[bookIndex].push(contact);
+            const book = this.addressBooks[bookIndex];
+            
+            // Check for duplicates
+            const isDuplicate = book.some(existingContact => 
+                existingContact.firstName === contact.firstName && existingContact.lastName === contact.lastName
+            );
+            
+            if (isDuplicate) {
+                throw new Error("Duplicate Entry: Contact with the same name already exists.");
+            }
+            
+            book.push(contact);
         } else {
             throw new Error("Invalid Address Book Index");
         }

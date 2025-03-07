@@ -57,11 +57,19 @@ class AddressBook {
     }
 
     sortContactsByName() {
-        this.contacts.sort((a, b) => {
-            let nameA = a.firstName.toLowerCase() + a.lastName.toLowerCase();
-            let nameB = b.firstName.toLowerCase() + b.lastName.toLowerCase();
-            return nameA.localeCompare(nameB);
-        });
+        this.contacts.sort((a, b) => (a.firstName + a.lastName).localeCompare(b.firstName + b.lastName));
+    }
+
+    sortContactsByCity() {
+        this.contacts.sort((a, b) => a.city.localeCompare(b.city));
+    }
+
+    sortContactsByState() {
+        this.contacts.sort((a, b) => a.state.localeCompare(b.state));
+    }
+
+    sortContactsByZip() {
+        this.contacts.sort((a, b) => a.zip.localeCompare(b.zip));
     }
 }
 

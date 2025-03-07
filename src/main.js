@@ -14,9 +14,16 @@ try {
     console.log("\nBefore Sorting:");
     console.log(addressBook.listContacts());
 
-    addressBook.sortContactsByName();
+    console.log("\nSorting by City:");
+    addressBook.sortContactsByCity();
+    console.log(addressBook.listContacts());
 
-    console.log("\nAfter Sorting:");
+    console.log("\nSorting by State:");
+    addressBook.sortContactsByState();
+    console.log(addressBook.listContacts());
+
+    console.log("\nSorting by Zip:");
+    addressBook.sortContactsByZip();
     console.log(addressBook.listContacts());
 
 } catch (error) {

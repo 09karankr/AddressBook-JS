@@ -116,6 +116,14 @@ class AddressBook {
             throw new Error("Invalid Address Book Index");
         }
     }
+
+    searchByCityOrState(bookIndex, city, state) {
+        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
+            return this.addressBooks[bookIndex].filter(contact => contact.city === city || contact.state === state);
+        } else {
+            throw new Error("Invalid Address Book Index");
+        }
+    }
 }
 
 module.exports = { Contact, AddressBook };

@@ -124,6 +124,25 @@ class AddressBook {
             throw new Error("Invalid Address Book Index");
         }
     }
+
+    viewPersonsByCityOrState(bookIndex) {
+        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
+            const personsByCityOrState = this.addressBooks[bookIndex].reduce((acc, contact) => {
+                if (!acc[contact.city]) {
+                    acc[contact.city] = [];
+                }
+                if (!acc[contact.state]) {
+                    acc[contact.state] = [];
+                }
+                acc[contact.city].push(contact.toString());
+                acc[contact.state].push(contact.toString());
+                return acc;
+            }, {});
+            return personsByCityOrState;
+        } else {
+            throw new Error("Invalid Address Book Index");
+        }
+    }
 }
 
 module.exports = { Contact, AddressBook };

@@ -1,29 +1,16 @@
 class Contact {
-    constructor(firstName, lastName, address, city, state, zip, phone, email) {
-        if (!/^[A-Z][a-zA-Z]{2,}$/.test(firstName)) {
-            throw new Error("Invalid First Name: Should start with a capital letter and have at least 3 characters.");
-        }
-        if (!/^[A-Z][a-zA-Z]{2,}$/.test(lastName)) {
-            throw new Error("Invalid Last Name: Should start with a capital letter and have at least 3 characters.");
-        }
-        if (!/^[a-zA-Z0-9\s]{4,}$/.test(address)) {
-            throw new Error("Invalid Address: Should have at least 4 characters.");
-        }
-        if (!/^[a-zA-Z]{4,}$/.test(city)) {
-            throw new Error("Invalid City: Should have at least 4 characters.");
-        }
-        if (!/^[a-zA-Z\s]{3,}$/.test(state)) {
-            throw new Error("Invalid State: Should have at least 3 characters.");
-        }
-        if (!/^\d{6}$/.test(zip)) {
-            throw new Error("Invalid Zip: Should be a 6-digit number.");
-        }
-        if (!/^\d{10}$/.test(phone)) {
-            throw new Error("Invalid Phone: Should be a 10-digit number.");
-        }
+    constructor(firstName, lastName, address, city, state, zip, phoneNumber, email) {
+        if (!/^[A-Z][a-zA-Z]{2,}$/.test(firstName)) throw new Error("Invalid First Name: Should start with a capital letter and have at least 3 characters.");
+        if (!/^[A-Z][a-zA-Z]{2,}$/.test(lastName)) throw new Error("Invalid Last Name: Should start with a capital letter and have at least 3 characters.");
+        if (!/^[a-zA-Z0-9\s]{4,}$/.test(address)) throw new Error("Invalid Address: Should have at least 4 characters.");
+        if (!/^[a-zA-Z\s]{4,}$/.test(city)) throw new Error("Invalid City: Should have at least 4 characters.");
+        if (!/^[a-zA-Z\s]{4,}$/.test(state)) throw new Error("Invalid State: Should have at least 4 characters.");
+        if (!/^\d{6}$/.test(zip)) throw new Error("Invalid Zip: Should be a 6-digit number.");
+        if (!/^\d{10}$/.test(phoneNumber)) throw new Error("Invalid Phone Number: Should be a 10-digit number.");
         if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-            throw new Error("Invalid Email: Should follow standard email format.");
+            throw new Error("Invalid Email Format.");
         }
+        
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,117 +18,64 @@ class Contact {
         this.city = city;
         this.state = state;
         this.zip = zip;
-        this.phone = phone;
+        this.phoneNumber = phoneNumber;
         this.email = email;
     }
 
     toString() {
-        return `${this.firstName} ${this.lastName}, ${this.address}, ${this.city}, ${this.state} - ${this.zip}, Phone: ${this.phone}, Email: ${this.email}`;
+        return `${this.firstName} ${this.lastName}, ${this.address}, ${this.city}, ${this.state}, ${this.zip}, ${this.phoneNumber}, ${this.email}`;
     }
 }
 
 class AddressBook {
     constructor() {
-        this.addressBooks = [];
+        this.books = [];
     }
 
     createNewAddressBook() {
-        const newBook = [];
-        this.addressBooks.push(newBook);
-        return newBook;
+        this.books.push([]);
+        return this.books.length - 1;
     }
 
     addContactToBook(bookIndex, contact) {
-        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
-            const book = this.addressBooks[bookIndex];
-            
-            // Check for duplicates
-            const isDuplicate = book.some(existingContact => 
-                existingContact.firstName === contact.firstName && existingContact.lastName === contact.lastName
-            );
-            
-            if (isDuplicate) {
-                throw new Error("Duplicate Entry: Contact with the same name already exists.");
-            }
-            
-            book.push(contact);
-        } else {
-            throw new Error("Invalid Address Book Index");
+        if (this.books[bookIndex].some(c => c.firstName === contact.firstName && c.lastName === contact.lastName)) {
+            throw new Error("Duplicate Entry: Contact with the same name already exists.");
         }
-    }
-
-    findContact(bookIndex, firstName, lastName) {
-        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
-            return this.addressBooks[bookIndex].find(contact => contact.firstName === firstName && contact.lastName === lastName);
-        } else {
-            throw new Error("Invalid Address Book Index");
-        }
-    }
-
-    editContact(bookIndex, firstName, lastName, newDetails) {
-        const contact = this.findContact(bookIndex, firstName, lastName);
-        if (contact) {
-            Object.assign(contact, newDetails);
-        } else {
-            throw new Error("Contact not found");
-        }
-    }
-
-    deleteContact(bookIndex, firstName, lastName) {
-        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
-            const book = this.addressBooks[bookIndex];
-            const contactIndex = book.findIndex(contact => contact.firstName === firstName && contact.lastName === lastName);
-            if (contactIndex !== -1) {
-                book.splice(contactIndex, 1);
-            } else {
-                throw new Error("Contact not found");
-            }
-        } else {
-            throw new Error("Invalid Address Book Index");
-        }
+        this.books[bookIndex].push(contact);
     }
 
     listContacts(bookIndex) {
-        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
-            return this.addressBooks[bookIndex].map(contact => contact.toString()).join("\n");
-        } else {
-            throw new Error("Invalid Address Book Index");
-        }
+        return this.books[bookIndex].map(contact => contact.toString()).join("\n");
     }
 
     getContactCount(bookIndex) {
-        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
-            return this.addressBooks[bookIndex].length;
-        } else {
-            throw new Error("Invalid Address Book Index");
-        }
+        return this.books[bookIndex].length;
     }
 
     searchByCityOrState(bookIndex, city, state) {
-        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
-            return this.addressBooks[bookIndex].filter(contact => contact.city === city || contact.state === state);
-        } else {
-            throw new Error("Invalid Address Book Index");
-        }
+        return this.books[bookIndex].filter(contact => 
+            (city && contact.city === city) || (state && contact.state === state)
+        );
     }
 
     viewPersonsByCityOrState(bookIndex) {
-        if (bookIndex >= 0 && bookIndex < this.addressBooks.length) {
-            const personsByCityOrState = this.addressBooks[bookIndex].reduce((acc, contact) => {
-                if (!acc[contact.city]) {
-                    acc[contact.city] = [];
-                }
-                if (!acc[contact.state]) {
-                    acc[contact.state] = [];
-                }
-                acc[contact.city].push(contact.toString());
-                acc[contact.state].push(contact.toString());
-                return acc;
-            }, {});
-            return personsByCityOrState;
-        } else {
-            throw new Error("Invalid Address Book Index");
-        }
+        return this.books[bookIndex].reduce((acc, contact) => {
+            acc[contact.city] = acc[contact.city] || [];
+            acc[contact.city].push(contact.toString());
+
+            acc[contact.state] = acc[contact.state] || [];
+            acc[contact.state].push(contact.toString());
+
+            return acc;
+        }, {});
+    }
+
+    getCountByCityOrState(bookIndex, type) {
+        return this.books[bookIndex].reduce((acc, contact) => {
+            const key = type === "city" ? contact.city : contact.state;
+            acc[key] = (acc[key] || 0) + 1;
+            return acc;
+        }, {});
     }
 }
 
